@@ -48,7 +48,9 @@ void	ft_putnbr_base(int nbr, char *base)
 }
 int main()
 {
+	char *str = NULL ;
     ft_putnbr_base(2004,"abcdefhngjnbjkdfgnbl");
     write(1,"done",4);
+	printf("%s",str);
     return (0);
 }
