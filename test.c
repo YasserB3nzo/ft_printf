@@ -1,5 +1,5 @@
 #include <unistd.h>
-
+#include <stdio.h>
 void	ft_putchar(char c)
 {
 	write(1, &c, 1);
@@ -48,9 +48,10 @@ void	ft_putnbr_base(int nbr, char *base)
 }
 int main()
 {
-	char *str = NULL ;
-    ft_putnbr_base(2004,"abcdefhngjnbjkdfgnbl");
-    write(1,"done",4);
-	printf("%s",str);
+	char str[] = "hh" ;
+	
+    //ft_putnbr_base(2004,"abcdefhngjnbjkdfgnbl");
+   // write(1,"done",4);
+	printf("%p",*&str);
     return (0);
 }
