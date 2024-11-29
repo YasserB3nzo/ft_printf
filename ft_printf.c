@@ -1,32 +1,33 @@
 #include "ft_printf.h"
 
- int    ftputstr(const char *str)
-  {
-     int    count;
+int ft_putstr(const char *str)
+{
+    int count;
 
-    if(!str)
-        write(1,"(null)",6)
-     count = 0;
-     while(str[count])
-     {
-         write(1,&str[count],1);
+    count = 0;
+    if (!str)
+    {
+        write(1, "(null)", 6);
+        return 6;
+    }
+    while (str[count])
+    {
+        write(1, &str[count], 1);
         count++;
     }
-     return (count);
- }
+    return count;
+}
 
-int putnbrbase(long number, char *base, int bl)
+int putnbrbase(long number, const char *base, int base_length)
 {
-    int     count;
-    char    result[64];
-    int     i;
-    
-    i = 0;
-    count = 0;
+    int count = 0;
+    char result[64];
+    int i = 0;
+
     if (number == 0)
     {
         write(1, &base[0], 1);
-        return (1);
+        return 1;
     }
     if (number < 0)
     {
@@ -36,53 +37,94 @@ int putnbrbase(long number, char *base, int bl)
     }
     while (number)
     {
-        result[i++] = base[number % bl];
-        number /= bl;
+        result[i++] = base[number % base_length];
+        number /= base_length;
     }
     while (--i >= 0)
     {
         write(1, &result[i], 1);
         count++;
     }
-    return (count);
+    return count;
 }
 
-//  int putpointer()
-//  {
-//  }
-
-int dataypecheck(char c, va_list args)
+int putpointer(unsigned long ptr_address)
 {
-    char    x;
+    int count;
 
-    if (c == 'd' || c == 'i')
-        return (putnbrbase((long)va_arg(args, int), "0123456789",10));
-    if (c == 'u')
-        return (putnbrbase((long)va_arg(args, unsigned int), "0123456789",10));
-    if (c == 's')
-        return (ft_putstr(va_arg(args, char *)));
-    if (c == 'x')
-        return (putnbrbase((unsigned int)va_arg(args, int), "0123456789abcdef",16));
-    if (c == 'X')
-        return (putnbrbase((unsigned int)va_arg(args, int), "0123456789ABCDEF",16));
-    if (c == 'p')
-        return (putpointer(va_arg(args, void *)));
-    if (c == 'c')
+    count = 0;
+    if (!ptr_address)
     {
-        x = va_arg(args, int); //it gets promotd to a int
-        return (write(1, &x, 1));
+        write(1, "(null)", 6);
+        return 6;
     }
-    if (c == '%')
-        return (write(1, "%", 1));
-    return (-1);
+    write(1, "0x", 2);
+    count += 2;
+    count += putnbrbase(ptr_address, "0123456789abcdef", 16);
+    return count;
 }
-//  int ft_printf(const char *dataype,...)
-//  {
-//  }
-int main()
+
+int datatype_check(char c, va_list args)
 {
-    putnbrbase(2004,"abcdefhngjnbjkdfgnbl",21);
-    ft_printf("%X","fgvfvns",'f',jhfbvjhsv,"bjhfdbvkd",'f',65665646);
+    int count = 0;
+
+    count = 0;
+    if (c == 'd' || c == 'i')
+        count = putnbrbase((long)va_arg(args, int), "0123456789", 10);
+    else if (c == 'u')
+        count = putnbrbase((long)va_arg(args, unsigned int), "0123456789", 10);
+    else if (c == 's')
+        count = ft_putstr(va_arg(args, char *));
+    else if (c == 'x')
+        count = putnbrbase((unsigned int)va_arg(args, int), "0123456789abcdef", 16);
+    else if (c == 'X')
+        count = putnbrbase((unsigned int)va_arg(args, int), "0123456789ABCDEF", 16);
+    else if (c == 'p')
+        count = putpointer(va_arg(args, unsigned long));
+    else if (c == 'c')
+    {
+        char x = (char)va_arg(args, int);
+        write(1, &x, 1);
+        count = 1;
+    }
+    else if (c == '%')
+    {
+        write(1, "%", 1);
+        count = 1;
+    }
+    else
+        count = -1;
+    return count;
 }
-// variadic function are the fucntion that can take x arguments
-//
+
+int ft_printf(const char *datatype, ...)
+{
+    int count = 0;
+    va_list args;
+    const char *str = datatype;
+
+    if (!datatype)
+        return -1;
+    va_start(args, datatype);
+    while (*str)
+    {
+        if (*str == '%')
+        {
+            int ret = datatype_check(*(++str), args);
+            if (ret < 0)
+            {
+                count = -1;
+                break;
+            }
+            count += ret;
+        }
+        else
+        {
+            write(1, str, 1);
+            count++;
+        }
+        str++;
+    }
+    va_end(args);
+    return count;
+}
