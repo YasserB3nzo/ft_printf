@@ -20,21 +20,15 @@ int ft_putstr(const char *str)
 
 int putnbrbase(long number, const char *base, int base_length)
 {
-    int count = 0;
+    int count;
     char result[64];
-    int i = 0;
+    int i;
 
-    if (number == 0)
-    {
-        write(1, &base[0], 1);
+    count = 0;
+    i = 0;
+    if(!checkputnbr(number,base))
         return 1;
-    }
-    if (number < 0)
-    {
-        write(1, "-", 1);
-        number = -number;
-        count++;
-    }
+    count++;
     while (number)
     {
         result[i++] = base[number % base_length];
@@ -66,7 +60,7 @@ int putpointer(unsigned long ptr_address)
 
 int datatype_check(char c, va_list args)
 {
-    int count = 0;
+    int count;
 
     count = 0;
     if (c == 'd' || c == 'i')
@@ -81,50 +75,22 @@ int datatype_check(char c, va_list args)
         count = putnbrbase((unsigned int)va_arg(args, int), "0123456789ABCDEF", 16);
     else if (c == 'p')
         count = putpointer(va_arg(args, unsigned long));
-    else if (c == 'c')
-    {
-        char x = (char)va_arg(args, int);
-        write(1, &x, 1);
-        count = 1;
-    }
-    else if (c == '%')
-    {
-        write(1, "%", 1);
-        count = 1;
-    }
-    else
-        count = -1;
+    count = checkchar(c,args);
     return count;
 }
 
 int ft_printf(const char *datatype, ...)
 {
-    int count = 0;
+    int     count;
     va_list args;
-    const char *str = datatype;
 
     if (!datatype)
         return -1;
+
     va_start(args, datatype);
-    while (*str)
-    {
-        if (*str == '%')
-        {
-            int ret = datatype_check(*(++str), args);
-            if (ret < 0)
-            {
-                count = -1;
-                break;
-            }
-            count += ret;
-        }
-        else
-        {
-            write(1, str, 1);
-            count++;
-        }
-        str++;
-    }
+    count = process_format(datatype, args);
     va_end(args);
+
     return count;
 }
+
