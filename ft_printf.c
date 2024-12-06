@@ -94,3 +94,11 @@ int ft_printf(const char *datatype, ...)
     return count;
 }
 
+// strdarg declar 4 macros
+// macro is a code segment that is replaced during compilation
+//va_list is a array of type struct that stores x amount of arguments
+// va_start macro that initialise va list /by pointing to the first argumment 
+// va_arg macro that returns the next argument in the list 
+// va_arg takes 2 arguments the va_list and the type of the next argument
+// va_end macro that cleans up the va_list
+// va list struct defenti
