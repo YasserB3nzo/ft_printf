@@ -2,9 +2,10 @@
 
 int checkchar(char c,va_list args)
 {
+    char x ;
     if (c == 'c')
     {
-        char x = (char)va_arg(args, int);
+        x = (char)va_arg(args, int);
         write(1, &x, 1);
         return (1);
     }

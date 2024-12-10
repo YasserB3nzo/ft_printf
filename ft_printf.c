@@ -101,4 +101,6 @@ int ft_printf(const char *datatype, ...)
 // va_arg macro that returns the next argument in the list 
 // va_arg takes 2 arguments the va_list and the type of the next argument
 // va_end macro that cleans up the va_list
-// va list struct defenti
+// va list inplemented as a struct / alias that represents the tools required to track variable arguments 
+// tools are the information needed to track the args
+// current position to track the memory adress/register offset of the next argument to be accessed
