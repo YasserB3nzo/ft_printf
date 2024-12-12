@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ybenzidi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ybenzidi <ybenzidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 22:24:08 by ybenzidi          #+#    #+#             */
-/*   Updated: 2024/12/12 23:02:50 by ybenzidi         ###   ########.fr       */
+/*   Updated: 2024/12/12 23:28:42 by ybenzidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <ft_printf.h>
 
 int	ft_putstr(const char *str)
 {
@@ -23,30 +25,6 @@ int	ft_putstr(const char *str)
 	while (str[count])
 	{
 		write(1, &str[count], 1);
-		count++;
-	}
-	return (count);
-}
-
-int	putnbrbase(long number, const char *base, int base_length)
-{
-	int	count;
-	char	result [64];
-	int	i;
-
-	count = 0;
-	i = 0;
-	if (!checkputnbr(number, base))
-		return (1);
-	count++;
-	while (number)
-	{
-		result[i++] = base[number % base_length];
-		number /= base_length;
-	}
-	while (--i >= 0)
-	{
-		write(1, &result[i], 1);
 		count++;
 	}
 	return (count);
@@ -68,34 +46,9 @@ int	putpointer(unsigned long ptr_address)
 	return (count);
 }
 
-int	datatype_check(char c, va_list args)
-{
-	int		count;
-	const char	*bas;
-	const char	*bas2;
-
-	count = 0;
-	bas = "0123456789abcedf";
-	bas2 = "0123456789ABCEDF";
-	if (c == 'd' || c == 'i')
-		count = putnbrbase((long)va_arg(args, int), "0123456789", 10);
-	else if (c == 'u')
-		count = putnbrbase((long)va_arg(args, unsigned int), "0123456789", 10);
-	else if (c == 's')
-		count = ft_putstr(va_arg(args, char *));
-	else if (c == 'x')
-		count = putnbrbase((unsigned int)va_arg(args, int), bas, 16);
-	else if (c == 'X')
-		count = putnbrbase((unsigned int)va_arg(args, int), bas2, 16);
-	else if (c == 'p')
-		count = putpointer(va_arg(args, unsigned long));
-	count = checkchar(c,args);
-	return (count);
-}
-
 int	ft_printf(const char *datatype, ...)
 {
-	int	count;
+	int		count;
 	va_list	args;
 
 	if (!datatype)
