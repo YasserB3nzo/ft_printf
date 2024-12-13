@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 int	checkchar(char c, va_list args)
 {
@@ -31,44 +32,47 @@ int	checkchar(char c, va_list args)
 		return (-1);
 }
 
-int	checkputnbr(long number, const char *base)
+int	checkputnbr(long *number)
 {
-	if (number == 0)
+	if (*number == 0)
 	{
-		write(1, &base[0], 1);
+		write(1, "0", 1);
 		return (0);
 	}
-	if (number < 0)
+	if (*number < 0)
 	{
 		write(1, "-", 1);
-		number = -number;
+		*number = - *number;
+		return (1);
 	}
-	return (1);
+		return (2);
 }
 
 int	process_format(const char *str, va_list args)
 {
 	int	count;
 	int	ret;
+	int	i;
 
 	count = 0;
-	while (*str)
+	i = 0;
+	ret = 0;
+	while (str[i])
 	{
-		if (*str == '%')
+		if (str[i] == '%')
 		{
-			ret = datatype_check(*(++str), args);
+			i++;
+			ret = datatype_check(str[i], args);
 			if (ret < 0)
-			{
 				return (-1);
-			}
 			count += ret;
 		}
 		else
 		{
-			write(1, str, 1);
+			write(1, &str[i], 1);
 			count++;
 		}
-		str++;
+		i++;
 	}
 	return (count);
 }

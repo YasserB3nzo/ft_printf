@@ -6,21 +6,26 @@
 /*   By: ybenzidi <ybenzidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:24:20 by ybenzidi          #+#    #+#             */
-/*   Updated: 2024/12/12 23:26:30 by ybenzidi         ###   ########.fr       */
+/*   Updated: 2024/12/13 23:27:37 by ybenzidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_printf.h"
 
 int	putnbrbase(long number, const char *base, int base_length)
 {
 	int		count;
 	int		i;
-	char	result[64];
+	char	result[75];
+	int check;
 
 	count = 0;
 	i = 0;
-	if (!checkputnbr(number, base))
+	check = checkputnbr(&number);
+	if (check == 0)
 		return (1);
-	count++;
+	if (check == 1)
+		count++;
 	while (number)
 	{
 		result[i++] = base[number % base_length];
