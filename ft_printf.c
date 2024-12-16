@@ -6,7 +6,7 @@
 /*   By: ybenzidi <ybenzidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 22:24:08 by ybenzidi          #+#    #+#             */
-/*   Updated: 2024/12/14 23:58:37 by ybenzidi         ###   ########.fr       */
+/*   Updated: 2024/12/16 21:55:54 by ybenzidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	ft_putstr(const char *str)
 		write(1, &str[count], 1);
 		count++;
 	}
-	return (count);
+	return (count + 1);
 }
 
-int	putpointer(unsigned long ptr_address)
+int	putpointer(void	*ptr_address)
 {
 	int	count;
 
@@ -42,7 +42,7 @@ int	putpointer(unsigned long ptr_address)
 	}
 	write(1, "0x", 2);
 	count += 2;
-	count += putnbrbase(ptr_address, "0123456789abcdef", 16);
+	count += putnbrbase((unsigned long)ptr_address, "0123456789abcdef", 16);
 	return (count);
 }
 
@@ -58,6 +58,7 @@ int	ft_printf(const char *datatype, ...)
 	va_end(args);
 	return (count);
 }
+
 // variadic fct is fct  can take any amout of arguments 
 // theres 2 types of register gp , fp .
 // gp_ofsset can store int , pointers and flags 
@@ -67,16 +68,23 @@ int	ft_printf(const char *datatype, ...)
 // gp registers hold 8 bytes and fp hold 16 bytes : for evrey register  
 
 // regitser storage place in cpu to hold data and instuctions 
-// when , when we have ram : register aare workspace for cpu 
+// why , when we have ram : register aare workspace for cpu 
 // register allow the cpu to manipulate and store data during in execution fatser then ram 
 // for storing intermi values like res of calculation 
 
 // strdarg declar 4 macros
 // macro is a code segment that is replaced during compilation
-// va_list data type to handle variable arg 
-// gp ofsset
-// fp ofsset 
-// overflowarea
-//
-// va list where the arguments will be stored
-//
+// va_list data type
+// va_list allow the fct to acces the additional args 
+// va_list defined as a struct that represents the elements needed 
+// to keep track of the arguments
+// how ? by traking where the args are located in memory
+
+// gp ofsset saved the loacation of the next arguments 
+// and it acts as a index into the reg save area to calculate 
+// where the next argumments is stored , its incrementd by the size of args 
+// fp ofsset also do the same as gp
+// overflowarea pointes where the arguments are stored in stack
+
+
+										

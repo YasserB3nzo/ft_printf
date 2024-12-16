@@ -6,7 +6,7 @@
 /*   By: ybenzidi <ybenzidi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:24:20 by ybenzidi          #+#    #+#             */
-/*   Updated: 2024/12/13 23:27:37 by ybenzidi         ###   ########.fr       */
+/*   Updated: 2024/12/16 18:44:51 by ybenzidi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	putnbrbase(long number, const char *base, int base_length)
 	int		count;
 	int		i;
 	char	result[75];
-	int check;
+	int		check;
 
 	count = 0;
 	i = 0;
@@ -36,5 +36,5 @@ int	putnbrbase(long number, const char *base, int base_length)
 		write(1, &result[i], 1);
 		count++;
 	}
-	return (count);
+	return (count + 1);
 }
