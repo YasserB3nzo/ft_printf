@@ -2,7 +2,7 @@
  int main()
 
 {
-    int i =printf("%d\n",-123);
-    ft_printf("%d",i);
-//   printf("\nit should be 1 , and its %d \n",i);
+    int i =ft_printf(" Yasser Benzidiya %d\n",-123);
+    int j = printf(" yasser benzidiya %d\n",-123);
+    ft_printf("f : %d \t p : %d",i , j);
 }
